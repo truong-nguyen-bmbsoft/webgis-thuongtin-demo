@@ -41,12 +41,39 @@ function init() {
         })
     });
 
+    const openStreetMapHumanitarian = new ol.layer.Tile({
+        source: new ol.source.OSM({
+            url: 'https://{a-c}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
+        }),
+        visible: true,
+        title: 'OSMHumanitarian'
+    })
+
+    const openStreetMapStandard = new ol.layer.Tile({
+        source: new ol.source.OSM(),
+        visible: false,
+        title: 'OSMHumanStandard'
+    })
+
+    const stamenTerrain = new ol.layer.Tile({
+        source: new ol.source.XYZ({
+            url: 'http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg',
+            attributions: 'DemoMap'
+            }),
+        visible: true,
+        title: 'StamenTerrain'
+    })
+
+    const baseLayerGroup  = new ol.layer.Group({
+        layers: [
+            openStreetMapHumanitarian, openStreetMapStandard, stamenTerrain
+        ]
+    })
+
     var map = new ol.Map({
         target: 'map',
         layers: [
-            new ol.layer.Tile({
-                source: new ol.source.OSM()
-            }),
+            baseLayerGroup,
             NEN,
             XANH,
             GROUP
@@ -58,6 +85,17 @@ function init() {
             maxZoom: 20
         })
     });
+
+    const baseLayerElements = document.querySelectorAll('.sidebar > input[type=radio]');
+    for (let baseLayerElement of baseLayerElements) {
+        baseLayerElement.addEventListener('change', function () {
+            let baseLayerElementValue = this.value;
+            baseLayerGroup.getLayers().forEach(function (element, index, array) {
+                let baseLayerTitle = element.get('title');
+                element.setVisible(baseLayerTitle === baseLayerElementValue)
+            })
+        })
+    }
 
     $("#chkNen").change(function() {
         if ($("#chkNen").is(":checked")) {
@@ -99,7 +137,7 @@ function init() {
                 dataType: 'json',
                 success: function (n) {
                     var content = "<table class=\"demo\" style='margin-left: 30px'>" +
-                        "    <p style='text-align: center; color:#2aabd2; margin-top: 20px; font-weight: bold'>Thông tin dự án</p>" +
+                        "    <p style='text-align: center; color:#2aabd2; margin-top: 10px; font-weight: bold'>Thông tin khu vực chọn</p>" +
                         "    <thead>" +
                         "    <tr>" +
                         "    <th>Tên lớp</th>" +

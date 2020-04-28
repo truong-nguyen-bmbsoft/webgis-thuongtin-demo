@@ -41,20 +41,31 @@
         </div>
     </div>
 
-    <div style="margin-right: 5px; margin-left: 20px" id="info"></div>
+    <div class="grid-container">
+        <div class="grid-1">
+            <div class="sidebar">
+                <p style="margin-left: 85px; color:#2aabd2; font-weight: bold">Chọn loại nền hiển thị:</p>
+                <input style="padding: 10px; margin-left: 85px; margin-bottom: 10px" type="radio" name="baseLayerTatioButton" value="OSMHumanStandard">OSM Human Standard<br>
+                <input style="padding: 10px; margin-left: 85px; margin-bottom: 10px" type="radio" name="baseLayerTatioButton" value="OSMHumanitarian">OSM Humanitarian<br>
+                <input style="padding: 10px; margin-left: 85px; margin-bottom: 10px" type="radio" name="baseLayerTatioButton" value="StamenTerrain">Stamen Terrain<br>
+            </div>
+        </div>
+    </div>
+
+    <div id="info"></div>
 </div>
 
 <div style="float:left; width: 50%; height: 800px" id="map" class="map"></div>
 
 <div style="float:left; width: 10%; height:100px; background: #ffffff; margin-left:30px">
-    <h4 style="text-align: center; margin-top: 10px;">Chú Giải</h4>
-    <table style="float: left; margin-right:50px;">
-        <tr>
-            <th><img
-                    src="http://localhost:8081/geoserver/thuongtin_map/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&LAYER=thuongtin_map:thuongtin-polygon" style="margin-left:50px"/>
-            </th>
-        </tr>
-    </table>
+    <div style="float: left">
+        <h4 style="text-align: center; margin-top: 10px;">Chú Giải</h4>
+        <table style="float: left; margin-right:50px;">
+            <tr>
+                <th><img src="http://localhost:8081/geoserver/thuongtin_map/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&LAYER=thuongtin_map:thuongtin-polygon" style="margin-left:50px"/></th>
+            </tr>
+        </table>
+    </div>
 </div>
 <script type="text/javascript" src="./lib/v6.3.1-dist/ol.js"></script>
 <script type="text/javascript" src="./main.js"></script>
