@@ -70,6 +70,36 @@ function init() {
         ]
     })
 
+    const fillStyle = new ol.style.Fill({
+        color: [84, 118, 255, 1]
+    });
+
+    const strokeStyle = new ol.style.Stroke({
+        color: [46, 45, 45, 1],
+        width: 1.2
+    });
+
+    const circleStyle = new ol.style.Circle({
+        color: [245, 49, 5, 1],
+        radius: 7,
+        stroke: strokeStyle
+    });
+
+    //Vector layer
+    const VNCountriesGeoJSON = new ol.layer.VectorImage({
+        source: new ol.source.Vector({
+            url:'./data/vector_data/VNCountriesGeoJSON.geojson',
+            format: new ol.format.GeoJSON()
+        }),
+        visible: true,
+        title: 'VNCountriesGeoJSON',
+        style: new ol.style.Style({
+            fill: fillStyle,
+            stroke: strokeStyle,
+            image: circleStyle
+        })
+    })
+
     var map = new ol.Map({
         target: 'map',
         layers: [
