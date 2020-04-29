@@ -88,7 +88,7 @@ function init() {
     //Vector layer
     const VNCountriesGeoJSON = new ol.layer.VectorImage({
         source: new ol.source.Vector({
-            url:'./data/vector_data/VNCountriesGeoJSON.geojson',
+            url: 'http://localhost:8080/Webgis/api/genderMap/0',
             format: new ol.format.GeoJSON()
         }),
         visible: true,
@@ -106,7 +106,8 @@ function init() {
             baseLayerGroup,
             NEN,
             XANH,
-            GROUP
+            GROUP,
+            VNCountriesGeoJSON
         ],
         view: new ol.View({
             center: ol.proj.fromLonLat([105.80657052165057, 20.757279835934643]),
@@ -116,6 +117,23 @@ function init() {
         })
     });
 
+    const overlayContainerElement = document.querySelector(".overlay-container");
+    const overlayLayer = new ol.Overlay({
+        element: overlayContainerElement
+    });
+    map.addOverlay(overlayLayer);
+    const overlayFeatureName = document.getElementById("address");
+    const overlayFeatureAdditionInfo = document.getElementById("description");
+    map.on("click", function (e) {
+        map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
+            let clickedCoordinate = e.coordinate;
+            let clickedFeatureName = feature.get('address');
+            let clickedFeatureInfo = feature.get('description');
+            overlayLayer.setPosition(clickedCoordinate);
+            overlayFeatureName.innerHTML = clickedFeatureName;
+            overlayFeatureAdditionInfo.innerHTML = clickedFeatureInfo;
+        })
+    })
     const baseLayerElements = document.querySelectorAll('.sidebar > input[type=radio]');
     for (let baseLayerElement of baseLayerElements) {
         baseLayerElement.addEventListener('change', function () {
@@ -151,45 +169,45 @@ function init() {
         }
     });
 
-    map.on('singleclick', function (evt) {
-        document.getElementById('info').innerHTML = "Loading... please wait...";
-        var view = map.getView();
-        var viewResolution = view.getResolution();
-        var source = GROUP.getSource();
-        var url = source.getFeatureInfoUrl(
-            evt.coordinate, viewResolution, view.getProjection(),
-            { 'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50 });
-        if (url) {
-            $.ajax({
-                type: "POST",
-                url: url,
-                contentType: "application/json; charset=utf-8",
-                dataType: 'json',
-                success: function (n) {
-                    var content = "<table class=\"demo\" style='margin-left: 30px'>" +
-                        "    <p style='text-align: center; color:#2aabd2; margin-top: 10px; font-weight: bold'>Thông tin khu vực chọn</p>" +
-                        "    <thead>" +
-                        "    <tr>" +
-                        "    <th>Tên lớp</th>" +
-                        "    <th>Màu sắc</th>" +
-                        "    <th>Kiểu line</th>" +
-                        "    <th>Độ cao</th>" +
-                        "    </tr>" +
-                        "    </thead>";
-                    for (var i = 0; i < n.features.length; i++) {
-                        var feature = n.features[i];
-                        var featureAttr = feature.properties;
-                        content += "<tr>"
-                            + "<td>" + featureAttr["layer"] + "</td>"
-                            + "<td>" + featureAttr["color"]+ "</td>"
-                            + "<td>" + featureAttr["linetype"]+ "</td>"
-                            + "<td>" + featureAttr["elevation"]+ "</td>"
-                            + "</tr>"
-                    }
-                    content += "</table>";
-                    $("#info").html(content);
-                }
-            });
-        }
-    });
+    // map.on('singleclick', function (evt) {
+    //     document.getElementById('info').innerHTML = "Loading... please wait...";
+    //     var view = map.getView();
+    //     var viewResolution = view.getResolution();
+    //     var source = GROUP.getSource();
+    //     var url = source.getFeatureInfoUrl(
+    //         evt.coordinate, viewResolution, view.getProjection(),
+    //         { 'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50 });
+    //     if (url) {
+    //         $.ajax({
+    //             type: "POST",
+    //             url: url,
+    //             contentType: "application/json; charset=utf-8",
+    //             dataType: 'json',
+    //             success: function (n) {
+    //                 var content = "<table class=\"demo\" style='margin-left: 30px'>" +
+    //                     "    <p style='text-align: center; color:#2aabd2; margin-top: 10px; font-weight: bold'>Thông tin khu vực chọn</p>" +
+    //                     "    <thead>" +
+    //                     "    <tr>" +
+    //                     "    <th>Tên lớp</th>" +
+    //                     "    <th>Màu sắc</th>" +
+    //                     "    <th>Kiểu line</th>" +
+    //                     "    <th>Độ cao</th>" +
+    //                     "    </tr>" +
+    //                     "    </thead>";
+    //                 for (var i = 0; i < n.features.length; i++) {
+    //                     var feature = n.features[i];
+    //                     var featureAttr = feature.properties;
+    //                     content += "<tr>"
+    //                         + "<td>" + featureAttr["layer"] + "</td>"
+    //                         + "<td>" + featureAttr["color"]+ "</td>"
+    //                         + "<td>" + featureAttr["linetype"]+ "</td>"
+    //                         + "<td>" + featureAttr["elevation"]+ "</td>"
+    //                         + "</tr>"
+    //                 }
+    //                 content += "</table>";
+    //                 $("#info").html(content);
+    //             }
+    //         });
+    //     }
+    // });
 }
