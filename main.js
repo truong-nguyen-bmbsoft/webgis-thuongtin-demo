@@ -70,21 +70,24 @@ function init() {
         ]
     })
 
-    const fillStyle = new ol.style.Fill({
-        color: [84, 118, 255, 1]
-    });
+    // const fillStyle = new ol.style.Fill({
+    //     color: [84, 118, 255, 1]
+    // });
+    //
+    // const strokeStyle = new ol.style.Stroke({
+    //     color: [46, 45, 45, 1],
+    //     width: 1.2
+    // });
+    //
+    // const circleStyle = new ol.style.Circle({
+    //     color: [245, 49, 5, 1],
+    //     radius: 7,
+    //     stroke: strokeStyle
+    // });
 
-    const strokeStyle = new ol.style.Stroke({
-        color: [46, 45, 45, 1],
-        width: 1.2
-    });
-
-    const circleStyle = new ol.style.Circle({
-        color: [245, 49, 5, 1],
-        radius: 7,
-        stroke: strokeStyle
-    });
-
+    var white = [255, 255, 255, 1];
+    var blue = [0, 153, 255, 1];
+    var width = 3;
     //Vector layer
     const VNCountriesGeoJSON = new ol.layer.VectorImage({
         source: new ol.source.Vector({
@@ -94,9 +97,17 @@ function init() {
         visible: true,
         title: 'VNCountriesGeoJSON',
         style: new ol.style.Style({
-            fill: fillStyle,
-            stroke: strokeStyle,
-            image: circleStyle
+            image: new ol.style.Circle({
+                radius: width * 2,
+                fill: new ol.style.Fill({
+                    color: blue
+                }),
+                stroke: new ol.style.Stroke({
+                    color: white,
+                    width: width / 2
+                })
+            }),
+            zIndex: Infinity
         })
     })
 
@@ -124,7 +135,7 @@ function init() {
     map.addOverlay(overlayLayer);
     const overlayFeatureName = document.getElementById("address");
     const overlayFeatureAdditionInfo = document.getElementById("description");
-    map.on("click", function (e) {
+    map.on("dblclick", function (e) {
         map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
             let clickedCoordinate = e.coordinate;
             let clickedFeatureName = feature.get('address');
@@ -169,45 +180,45 @@ function init() {
         }
     });
 
-    // map.on('singleclick', function (evt) {
-    //     document.getElementById('info').innerHTML = "Loading... please wait...";
-    //     var view = map.getView();
-    //     var viewResolution = view.getResolution();
-    //     var source = GROUP.getSource();
-    //     var url = source.getFeatureInfoUrl(
-    //         evt.coordinate, viewResolution, view.getProjection(),
-    //         { 'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50 });
-    //     if (url) {
-    //         $.ajax({
-    //             type: "POST",
-    //             url: url,
-    //             contentType: "application/json; charset=utf-8",
-    //             dataType: 'json',
-    //             success: function (n) {
-    //                 var content = "<table class=\"demo\" style='margin-left: 30px'>" +
-    //                     "    <p style='text-align: center; color:#2aabd2; margin-top: 10px; font-weight: bold'>Thông tin khu vực chọn</p>" +
-    //                     "    <thead>" +
-    //                     "    <tr>" +
-    //                     "    <th>Tên lớp</th>" +
-    //                     "    <th>Màu sắc</th>" +
-    //                     "    <th>Kiểu line</th>" +
-    //                     "    <th>Độ cao</th>" +
-    //                     "    </tr>" +
-    //                     "    </thead>";
-    //                 for (var i = 0; i < n.features.length; i++) {
-    //                     var feature = n.features[i];
-    //                     var featureAttr = feature.properties;
-    //                     content += "<tr>"
-    //                         + "<td>" + featureAttr["layer"] + "</td>"
-    //                         + "<td>" + featureAttr["color"]+ "</td>"
-    //                         + "<td>" + featureAttr["linetype"]+ "</td>"
-    //                         + "<td>" + featureAttr["elevation"]+ "</td>"
-    //                         + "</tr>"
-    //                 }
-    //                 content += "</table>";
-    //                 $("#info").html(content);
-    //             }
-    //         });
-    //     }
-    // });
+    map.on('singleclick', function (evt) {
+        document.getElementById('info').innerHTML = "Loading... please wait...";
+        var view = map.getView();
+        var viewResolution = view.getResolution();
+        var source = GROUP.getSource();
+        var url = source.getFeatureInfoUrl(
+            evt.coordinate, viewResolution, view.getProjection(),
+            { 'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50 });
+        if (url) {
+            $.ajax({
+                type: "POST",
+                url: url,
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (n) {
+                    var content = "<table class=\"demo\" style='margin-left: 30px'>" +
+                        "    <p style='text-align: center; color:#2aabd2; margin-top: 10px; font-weight: bold'>Thông tin khu vực chọn</p>" +
+                        "    <thead>" +
+                        "    <tr>" +
+                        "    <th>Tên lớp</th>" +
+                        "    <th>Màu sắc</th>" +
+                        "    <th>Kiểu line</th>" +
+                        "    <th>Độ cao</th>" +
+                        "    </tr>" +
+                        "    </thead>";
+                    for (var i = 0; i < n.features.length; i++) {
+                        var feature = n.features[i];
+                        var featureAttr = feature.properties;
+                        content += "<tr>"
+                            + "<td>" + featureAttr["layer"] + "</td>"
+                            + "<td>" + featureAttr["color"]+ "</td>"
+                            + "<td>" + featureAttr["linetype"]+ "</td>"
+                            + "<td>" + featureAttr["elevation"]+ "</td>"
+                            + "</tr>"
+                    }
+                    content += "</table>";
+                    $("#info").html(content);
+                }
+            });
+        }
+    });
 }
