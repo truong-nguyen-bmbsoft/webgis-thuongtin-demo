@@ -6,7 +6,7 @@ curl "https://cgis-dongtrieu-api.bmbsoft.com.vn:9986/api/admin/Planning/update-m
   -H "authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5jaDE4MDI5N0BnbWFpbC5jb20iLCJlbWFpbCI6Im5jaDE4MDI5N0BnbWFpbC5jb20iLCJmdWxsTmFtZSI6Ik5ndXnhu4VuIEPDtG5nIEjhuq11IiwiYXZhdGFyIjoibnVsbCIsInVzZXJSb2xlIjoiQURNSU4iLCJ1c2VySWQiOiI4NDZiYWVmZi05ZTE2LTQzZjAtYjVjNC0zZDNhYjQzNDhlOTkiLCJleHAiOjE1OTY0MzA3OTN9.CSQ3H9Kj5kBubqsaeHvQJg3FHVlqEFNy6utyYbqnL0k"
   -H "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
   -H "content-type: application/json;charset=UTF-8"
-  -H "origin: https://cgis-dongtrieu.bmbsoft.com.vn:9994"
+  -H "origin: https://cgis-dongtrieu.bmbsoft.com.vn:9994"s
   -H "sec-fetch-site: same-site"
   -H "sec-fetch-mode: cors"
   -H "sec-fetch-dest: empty"
