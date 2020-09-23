@@ -28,15 +28,31 @@ function init() {
         })
     });
 
+    var XANH1 = new ol.layer.Image({
+        source: new ol.source.ImageWMS({
+            ratio: 1,
+            url: "http://dongtrieusmartcity.c2tech.vn:8080/geoserver/qhdongtrieu/wms",
+            params: {
+                projection: "EPSG:4326",
+                transparent: true,
+                format: 'image/png',
+                VERSION: "1.1.0",
+                STYLES: "",
+                LAYERS: "qhdongtrieu:qhpk10_sdd_m3_tiff"
+            }
+        })
+    });
+
     var GROUP = new ol.layer.Image({
         source: new ol.source.ImageWMS({
             ratio: 1,
-            url: "http://localhost:8081/geoserver/thuongtin_map/wms",
+            url: "http://thanhhoasmartcity.cgis.vn:8080/geoserver/qhthanhhoa/wms",
             params: {
-                FORMAT: format,
+                projection: "EPSG:4326",
+                FORMAT: 'image/tiff',
                 VERSION: "1.1.0",
                 STYLES: "",
-                LAYERS: "thuongtin_map:thuongtin_map"
+                LAYERS: "qhthanhhoa:b3ce_71b0_405a_49de_4ba5"
             }
         })
     });
@@ -115,13 +131,13 @@ function init() {
         target: 'map',
         layers: [
             baseLayerGroup,
-            NEN,
-            XANH,
-            GROUP,
-            VNCountriesGeoJSON
+            // NEN,
+            XANH1,
+            // GROUP,
+            // VNCountriesGeoJSON
         ],
         view: new ol.View({
-            center: ol.proj.fromLonLat([105.80657052165057, 20.757279835934643]),
+            center: ol.proj.fromLonLat([106.438140869141, 21.0090808868408]),
             zoom: 10,
             minZoom: 1,
             maxZoom: 20
